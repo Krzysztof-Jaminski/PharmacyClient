@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { Medication, PharmacyService } from './pharmacy-service';
 
 @Component({
@@ -7,10 +7,16 @@ import { Medication, PharmacyService } from './pharmacy-service';
   styleUrl: './app.css',
   standalone: true
 })
-export class App {
+export class App implements OnInit {
   protected readonly title = signal('Pharmacy');
 
   medications: Medication[] = [];
 
   constructor(private pharmacyService: PharmacyService) { }
+
+  ngOnInit(): void {
+    this.pharmacyService.getMedications().subscribe((medications) => {
+      this.medications = medications;
+    });
+  }
 }
